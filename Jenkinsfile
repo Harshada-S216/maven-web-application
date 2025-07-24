@@ -1,75 +1,65 @@
-pipeline{
+pipeline {
+    agent any
 
-agent any
+    tools {
+        maven 'maven9.9'
+        git 'Default'
+    }
 
-tools{
-maven 'maven3.8.2'
+    stages {
+        stage('gitCheckout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Harshada-S216/maven-web-application.git'
+            }
+        }
 
-}
+        stage('mavenBuild') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
 
-triggers{
-pollSCM('* * * * *')
-}
+        stage('sonarAnalysis') {
+            steps {
+                sh 'mvn sonar:sonar'
+            }
+        }
+        stage('NexusDeploy'){
+            steps{
+               sh "mvn deploy"
+              }
+           }
 
-options{
-timestamps()
-buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
-}
-
-stages{
-
-  stage('CheckOutCode'){
-    steps{
-    git branch: 'development', credentialsId: '957b543e-6f77-4cef-9aec-82e9b0230975', url: 'https://github.com/devopstrainingblr/maven-web-application-1.git'
-	
-	}
-  }
-  
-  stage('Build'){
-  steps{
-  sh  "mvn clean package"
-  }
-  }
-/*
- stage('ExecuteSonarQubeReport'){
-  steps{
-  sh  "mvn clean sonar:sonar"
-  }
-  }
-  
-  stage('UploadArtifactsIntoNexus'){
-  steps{
-  sh  "mvn clean deploy"
-  }
-  }
-  
-  stage('DeployAppIntoTomcat'){
-  steps{
-  sshagent(['bfe1b3c1-c29b-4a4d-b97a-c068b7748cd0']) {
-   sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@35.154.190.162:/opt/apache-tomcat-9.0.50/webapps/"    
-  }
-  }
-  }
-  */
-}//Stages Closing
-
-post{
-
- success{
- emailext to: 'devopstrainingblr@gmail.com,mithuntechnologies@yahoo.com',
-          subject: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          body: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          replyTo: 'devopstrainingblr@gmail.com'
+         stage('tomcatDeploy'){
+            steps{
+            sshagent(['Tomcat key pem']) {
+              sh """
+      	  scp -o StrictHostKeyChecking=no target/maven-web-application.war ubuntu@15.206.90.54:/opt/apache-tomcat-9.0.106/webapps/
+        	  """
+                 }
+              }
+            }
+        
+          }
+         post {
+          success {
+              slackSend (
+                  color: 'good', // green
+                  message: "✅ *Build Success* - Job: ${env.JOB_NAME}, Build: #${env.BUILD_NUMBER}\n<${env.BUILD_URL}|Click here to view details>"
+              )
+          }
+          failure {
+              slackSend (
+                  color: 'danger', // red
+                  message: "❌ *Build Failed* - Job: ${env.JOB_NAME}, Build: #${env.BUILD_NUMBER}\n<${env.BUILD_URL}|Click here to view details>"
+              )
+          }
+          unstable {
+              slackSend (
+                  color: 'warning', // yellow
+                  message: "⚠️ *Build Unstable* - Job: ${env.JOB_NAME}, Build: #${env.BUILD_NUMBER}\n<${env.BUILD_URL}|Click here to view details>"
+              )
+          }
+      }	  
  }
- 
- failure{
- emailext to: 'devopstrainingblr@gmail.com,mithuntechnologies@yahoo.com',
-          subject: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          body: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-          replyTo: 'devopstrainingblr@gmail.com'
- }
- 
-}
 
-
-}//Pipeline closing
