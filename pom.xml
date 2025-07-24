@@ -97,13 +97,13 @@
 	    <repository>
 	        <id>nexus</id>
 	        <name>HOSTED-release-repo</name>
-	        <url>http://13.126.44.107:8081/repository/HOSTED-snapshot-repo/</url>
+	        <url>http://13.126.44.107:8081/repository/HOSTED-release-repo/</url>
 	    </repository>
 		
 	    <snapshotRepository>
 	        <id>nexus</id>
 	        <name>HOSTED-snapshot-repo</name>
-	        <url>http://13.126.44.107:8081/repository/HOSTED-release-repo/</url>
+	        <url>http://13.126.44.107:8081/repository/HOSTED-snapshot-repo/</url>
 	    </snapshotRepository>
 		
 	</distributionManagement>
