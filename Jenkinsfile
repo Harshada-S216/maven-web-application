@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 pipeline {
     agent any
 
     tools {
-        maven 'Maven_3.9.7'
+        maven 'maven3'
     }
 
     stages {
@@ -16,6 +15,4 @@ pipeline {
         }
     }
 }
-=======
->>>>>>> ba0115de500b04f186632fb98b2179e9070c2067
 
