@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t 149532345567.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${buildNumber} .'
+                sh 'docker build -t 004058506543.dkr.ecr.ap-south-1.amazonaws.com/harshadaregistry:${buildNumber} .'
             }
         }
     }
