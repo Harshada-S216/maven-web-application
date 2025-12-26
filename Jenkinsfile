@@ -21,10 +21,14 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t 004058506543.dkr.ecr.ap-south-1.amazonaws.com/harshadaregistry:${buildNumber} .'
-            }
+    steps {
+        sh '''
+        docker build -t \
+        004058506543.dkr.ecr.ap-south-1.amazonaws.com/harshadaregistry:${BUILD_NUMBER} .
+        '''
         }
+     }
+
     }
 }
 
