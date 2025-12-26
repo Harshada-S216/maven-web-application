@@ -13,7 +13,6 @@ pipeline {
                 url: 'https://github.com/sanket0101/maven-web-application.git'
             }
         }
-    }
 
     stage('Build Artifact using Maven') {
             steps {
@@ -26,6 +25,7 @@ pipeline {
                 sh 'docker build -t 149532345567.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${buildNumber} .'
             }
         }
+    }
 }
 
 
