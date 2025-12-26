@@ -26,9 +26,18 @@ pipeline {
         docker build -t \
         004058506543.dkr.ecr.ap-south-1.amazonaws.com/harshadaregistry:${BUILD_NUMBER} .
         '''
-        }
-     }
+         }
+      }
+     stage('Authenticate and Push Docker Image to AWS ECR') {
+            steps {
+                sh 'aws ecr get-login-password --region ap-south-1 | docker login \
+              --username AWS --password-stdin \
+               004058506543.dkr.ecr.ap-south-1.amazonaws.com'
 
+                sh 'docker push \
+                004058506543.dkr.ecr.ap-south-1.amazonaws.com/harshadaregistry:${BUILD_NUMBER}'
+            }
+        }
     }
 }
 
