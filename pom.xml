@@ -17,8 +17,8 @@
 	</organization>
 
 	<properties>
-		<sonar.host.url>http://65.0.101.57:9000/</sonar.host.url>
-                <sonar.token>squ_35647609f4fa7a13e3342750243ab665c25f7190</sonar.token>
+		<sonar.host.url>http://65.2.161.13:9000/</sonar.host.url>
+        <sonar.token>sqa_90f88b7435b852c9ab6afea75607b17ea04af67f</sonar.token>
 		<jdk.version>1.8</jdk.version>
 		<spring.version>5.1.2.RELEASE</spring.version>
 		<junit.version>4.11</junit.version>
@@ -96,15 +96,9 @@
 	
 	    <repository>
 	        <id>nexus</id>
-	        <name>HOSTED-release-repo</name>
-	        <url>http://13.233.229.128:8081/repository/HOSTED-release-repo/</url>
+	        <name>maven-releases001</name>
+	        <url>http://13.201.76.114:8081/repository/maven-releases001/</url>
 	    </repository>
-		
-	    <snapshotRepository>
-	        <id>nexus</id>
-	        <name>HOSTED-snapshot-repo</name>
-	        <url>http://13.233.229.128:8081/repository/HOSTED-snapshot-repo/</url>
-	    </snapshotRepository>
 		
 	</distributionManagement>
 	
